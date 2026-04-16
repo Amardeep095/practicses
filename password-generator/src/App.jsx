@@ -1,4 +1,4 @@
-import { useState ,useCallback} from 'react'
+import { useState ,useCallback , useEffect} from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
@@ -23,22 +23,33 @@ function App() {
     setPassword(pass)
 
   }, [length, numberAllowed, characterAllowed, setPassword])
+  useEffect(()=>{
+    passwordGenerator()
+  },[length ,numberAllowed,characterAllowed,passwordGenerator])
 
   return (
     <>
         <h1 className='text-4xl text-center text-white'>Password Generator</h1>
-        <div>
-          <div className='flex flex-col gap-4 mt-10'>
+        <span>
+          <span className='flex flex-col gap-4 mt-10'>
             <label className='text-white'>Password Length: {length}</label>
             <input type="range" min="4" max="20" value={length} onChange={(e) => setLength(e.target.value)} />
-            <div className='flex gap-4'>
+            <span className='flex gap-4'>
+
               <label className='text-white'><input type="checkbox" checked={numberAllowed} onChange={(e) => setNumberAllowed(e.target.checked)} /> Include Numbers</label>
+
               <label className='text-white'><input type="checkbox" checked={characterAllowed} onChange={(e) => setCharacterAllowed(e.target.checked)} /> Include Special Characters</label>
-            </div>
+
+            </span>
+
             <button className='bg-blue-500 text-white px-4 py-2 rounded' onClick={passwordGenerator}>Generate Password</button>
             {password && <p className='text-green-500 mt-4'>Generated Password: {password}</p>}
-          </div>
-        </div>
+          
+            <button className='bg-green-500 text-white px-4 py-2 rounded' onClick={() => navigator.clipboard.writeText(password)} >
+              Copy to Clipboard
+            </button>
+          </span>
+        </span>
     </>
   )
 }
